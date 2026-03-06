@@ -1,0 +1,42 @@
+﻿version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    container_name: mutola_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/media:/app/media
+      - ./backend/staticfiles:/app/staticfiles
+    expose:
+      - "8000"
+    networks:
+      - mutola_network
+
+  frontend:
+    build: ./frontend
+    container_name: mutola_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mutola_network
+
+  telegram_bot:
+    build: ./telegram_bot
+    container_name: mutola_bot
+    restart: always
+    env_file:
+      - ./telegram_bot/.env
+    depends_on:
+      - backend
+    networks:
+      - mutola_network
+
+networks:
+  mutola_network:
+    driver: bridge
