@@ -2,7 +2,8 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+# .env faylni aniq ko'rsatish
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / '.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -106,3 +107,9 @@ SPECTACULAR_SETTINGS = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Production Security
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_TRUSTED_ORIGINS = ['http://83.229.85.64']
