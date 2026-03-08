@@ -122,6 +122,7 @@ class Logout(APIView):
         return Response({"detail":"Logged out"})
 
 class Subscribe(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         sub, _ = Subscription.objects.get_or_create(user=request.user)
         sub.is_premium = True
@@ -148,3 +149,4 @@ class CommentListCreate(APIView):
             return Response({"detail":"Not found"}, status=404)
         c = Comment.objects.create(user=request.user, book=book, rating=rating, text=text)
         return Response(CommentSerializer(c).data, status=201)
+
