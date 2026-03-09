@@ -1,0 +1,2 @@
+# Nginx config - no BOM, LF endings
+frontend/nginx.conf text eol=lf working-tree-encoding=UTF-8
