@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Subscription
+from .models import Subscription, Profile
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ("user","is_premium","activated_at")
-    list_filter = ("is_premium",)
-    search_fields = ("user__username","user__email")
+    list_display = ("user", "is_premium", "activated_at")
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "full_name", "bio")

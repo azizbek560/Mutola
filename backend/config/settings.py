@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 import os
 from dotenv import load_dotenv
 
@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     'accounts',
     'reviews',
     'api',
+    'bookmarks',
+    'notifications',
+    'stats',
 ]
 
 MIDDLEWARE = [

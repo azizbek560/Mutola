@@ -1,18 +1,65 @@
 from django.urls import path
-from api import api_views
+from catalog.views import (
+    GenreListView, BookListView, BookDetailView,
+    BookTopView, BookNewView, BookRelatedView,
+    BookPdfView, BookAudioView
+)
+from accounts.views import (
+    RegisterView, LoginView, LogoutView, MeView,
+    ChangePasswordView, ForgotPasswordView,
+    ProfileView, ProfileUpdateView, ProfileAvatarView,
+    SubscribeView
+)
+from bookmarks.views import BookmarkListCreateView, BookmarkDeleteView
+from reviews.views import CommentListCreateView, CommentDetailView, MyReviewsView
+from notifications.views import NotificationListView, NotificationReadView, NotificationReadAllView
+from stats.views import StatsView
+from core.views import SiteLinksView
 
 urlpatterns = [
-    path("genres/", api_views.GenreList.as_view(), name="api-genres"),
-    path("books/", api_views.BookList.as_view(), name="api-books"),
-    path("books/<int:id>/", api_views.BookDetail.as_view(), name="api-book-detail"),
-    path("books/<int:id>/pdf/", api_views.BookPdf.as_view(), name="api-book-pdf"),
-    path("books/<int:id>/audio/", api_views.BookAudio.as_view(), name="api-book-audio"),
-    path("books/<int:book_id>/comments/", api_views.CommentListCreate.as_view(), name="api-book-comments"),
-    path("links/", api_views.SiteLinks.as_view(), name="api-links"),
+    # Genres
+    path("genres/", GenreListView.as_view(), name="api-genres"),
 
-    path("auth/register/", api_views.Register.as_view(), name="api-register"),
-    path("auth/login/", api_views.Login.as_view(), name="api-login"),
-    path("auth/logout/", api_views.Logout.as_view(), name="api-logout"),
-    path("auth/me/", api_views.Me.as_view(), name="api-me"),
-    path("subscribe/", api_views.Subscribe.as_view(), name="api-subscribe"),
+    # Books
+    path("books/", BookListView.as_view(), name="api-books"),
+    path("books/top/", BookTopView.as_view(), name="api-books-top"),
+    path("books/new/", BookNewView.as_view(), name="api-books-new"),
+    path("books/<int:id>/", BookDetailView.as_view(), name="api-book-detail"),
+    path("books/<int:id>/pdf/", BookPdfView.as_view(), name="api-book-pdf"),
+    path("books/<int:id>/audio/", BookAudioView.as_view(), name="api-book-audio"),
+    path("books/<int:id>/related/", BookRelatedView.as_view(), name="api-book-related"),
+    path("books/<int:book_id>/comments/", CommentListCreateView.as_view(), name="api-book-comments"),
+
+    # Auth
+    path("auth/register/", RegisterView.as_view(), name="api-register"),
+    path("auth/login/", LoginView.as_view(), name="api-login"),
+    path("auth/logout/", LogoutView.as_view(), name="api-logout"),
+    path("auth/me/", MeView.as_view(), name="api-me"),
+    path("auth/change-password/", ChangePasswordView.as_view(), name="api-change-password"),
+    path("auth/forgot-password/", ForgotPasswordView.as_view(), name="api-forgot-password"),
+    path("auth/profile/<str:username>/", ProfileView.as_view(), name="api-profile"),
+    path("auth/profile/update/", ProfileUpdateView.as_view(), name="api-profile-update"),
+    path("auth/profile/avatar/", ProfileAvatarView.as_view(), name="api-profile-avatar"),
+
+    # Subscribe
+    path("subscribe/", SubscribeView.as_view(), name="api-subscribe"),
+
+    # Bookmarks
+    path("bookmarks/", BookmarkListCreateView.as_view(), name="api-bookmarks"),
+    path("bookmarks/<int:id>/", BookmarkDeleteView.as_view(), name="api-bookmark-delete"),
+
+    # Reviews
+    path("reviews/my/", MyReviewsView.as_view(), name="api-my-reviews"),
+    path("reviews/<int:id>/", CommentDetailView.as_view(), name="api-review-detail"),
+
+    # Notifications
+    path("notifications/", NotificationListView.as_view(), name="api-notifications"),
+    path("notifications/<int:id>/read/", NotificationReadView.as_view(), name="api-notification-read"),
+    path("notifications/read-all/", NotificationReadAllView.as_view(), name="api-notification-read-all"),
+
+    # Stats
+    path("stats/", StatsView.as_view(), name="api-stats"),
+
+    # Links
+    path("links/", SiteLinksView.as_view(), name="api-links"),
 ]
