@@ -17,10 +17,7 @@ from stats.views import StatsView
 from core.views import SiteLinksView
 
 urlpatterns = [
-    # Genres
     path("genres/", GenreListView.as_view(), name="api-genres"),
-
-    # Books
     path("books/", BookListView.as_view(), name="api-books"),
     path("books/top/", BookTopView.as_view(), name="api-books-top"),
     path("books/new/", BookNewView.as_view(), name="api-books-new"),
@@ -29,37 +26,23 @@ urlpatterns = [
     path("books/<int:id>/audio/", BookAudioView.as_view(), name="api-book-audio"),
     path("books/<int:id>/related/", BookRelatedView.as_view(), name="api-book-related"),
     path("books/<int:book_id>/comments/", CommentListCreateView.as_view(), name="api-book-comments"),
-
-    # Auth
     path("auth/register/", RegisterView.as_view(), name="api-register"),
     path("auth/login/", LoginView.as_view(), name="api-login"),
     path("auth/logout/", LogoutView.as_view(), name="api-logout"),
     path("auth/me/", MeView.as_view(), name="api-me"),
     path("auth/change-password/", ChangePasswordView.as_view(), name="api-change-password"),
     path("auth/forgot-password/", ForgotPasswordView.as_view(), name="api-forgot-password"),
-    path("auth/profile/<str:username>/", ProfileView.as_view(), name="api-profile"),
     path("auth/profile/update/", ProfileUpdateView.as_view(), name="api-profile-update"),
     path("auth/profile/avatar/", ProfileAvatarView.as_view(), name="api-profile-avatar"),
-
-    # Subscribe
+    path("auth/profile/<str:username>/", ProfileView.as_view(), name="api-profile"),
     path("subscribe/", SubscribeView.as_view(), name="api-subscribe"),
-
-    # Bookmarks
     path("bookmarks/", BookmarkListCreateView.as_view(), name="api-bookmarks"),
     path("bookmarks/<int:id>/", BookmarkDeleteView.as_view(), name="api-bookmark-delete"),
-
-    # Reviews
     path("reviews/my/", MyReviewsView.as_view(), name="api-my-reviews"),
     path("reviews/<int:id>/", CommentDetailView.as_view(), name="api-review-detail"),
-
-    # Notifications
     path("notifications/", NotificationListView.as_view(), name="api-notifications"),
-    path("notifications/<int:id>/read/", NotificationReadView.as_view(), name="api-notification-read"),
     path("notifications/read-all/", NotificationReadAllView.as_view(), name="api-notification-read-all"),
-
-    # Stats
+    path("notifications/<int:id>/read/", NotificationReadView.as_view(), name="api-notification-read"),
     path("stats/", StatsView.as_view(), name="api-stats"),
-
-    # Links
     path("links/", SiteLinksView.as_view(), name="api-links"),
 ]
