@@ -1,19 +1,20 @@
 import random
 import string
 from django.contrib.auth import authenticate, get_user_model
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from drf_spectacular.utils import extend_schema, OpenApiExample
-from drf_spectacular.openapi import AutoSchema
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
 from accounts.models import Subscription, Profile
 from api.serializers import ProfileSerializer, SubscriptionSerializer, RegisterSerializer, LoginSerializer
 
 User = get_user_model()
 
 class RegisterView(APIView):
-    @extend_schema(request=RegisterSerializer, responses={200: RegisterSerializer})
+    @extend_schema(request=RegisterSerializer, responses={200: inline_serializer("RegisterResponse", fields={"token": serializers.CharField(), "username": serializers.CharField(), "is_premium": serializers.BooleanField()})})
     def post(self, request):
         s = RegisterSerializer(data=request.data)
         if not s.is_valid():
@@ -23,7 +24,7 @@ class RegisterView(APIView):
         return Response({"token": token.key, "username": user.username, "is_premium": False})
 
 class LoginView(APIView):
-    @extend_schema(request=LoginSerializer, responses={200: LoginSerializer})
+    @extend_schema(request=LoginSerializer, responses={200: inline_serializer("LoginResponse", fields={"token": serializers.CharField(), "username": serializers.CharField(), "is_premium": serializers.BooleanField()})})
     def post(self, request):
         s = LoginSerializer(data=request.data)
         if not s.is_valid():
@@ -38,6 +39,7 @@ class LoginView(APIView):
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(responses={200: inline_serializer("LogoutResponse", fields={"detail": serializers.CharField()})})
     def post(self, request):
         Token.objects.filter(user=request.user).delete()
         Token.objects.create(user=request.user)
@@ -45,6 +47,7 @@ class LogoutView(APIView):
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(responses={200: inline_serializer("MeResponse", fields={"username": serializers.CharField(), "full_name": serializers.CharField(), "bio": serializers.CharField(), "is_premium": serializers.BooleanField()})})
     def get(self, request):
         profile, _ = Profile.objects.get_or_create(user=request.user)
         return Response({
@@ -56,6 +59,7 @@ class MeView(APIView):
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(request=inline_serializer("ChangePasswordRequest", fields={"old_password": serializers.CharField(), "new_password": serializers.CharField()}), responses={200: inline_serializer("ChangePasswordResponse", fields={"detail": serializers.CharField(), "token": serializers.CharField()})})
     def put(self, request):
         old_password = request.data.get("old_password")
         new_password = request.data.get("new_password")
@@ -72,6 +76,7 @@ class ChangePasswordView(APIView):
         return Response({"detail": "Parol muvaffaqiyatli ozgartirildi", "token": token.key})
 
 class ForgotPasswordView(APIView):
+    @extend_schema(request=inline_serializer("ForgotPasswordRequest", fields={"username": serializers.CharField()}), responses={200: inline_serializer("ForgotPasswordResponse", fields={"detail": serializers.CharField(), "new_password": serializers.CharField()})})
     def post(self, request):
         username = request.data.get("username")
         if not username:
@@ -87,6 +92,7 @@ class ForgotPasswordView(APIView):
         return Response({"detail": "Yangi parol yaratildi", "new_password": new_password})
 
 class ProfileView(APIView):
+    @extend_schema(responses={200: ProfileSerializer})
     def get(self, request, username):
         user = User.objects.filter(username=username).first()
         if not user:
@@ -96,6 +102,7 @@ class ProfileView(APIView):
 
 class ProfileUpdateView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(request=inline_serializer("ProfileUpdateRequest", fields={"full_name": serializers.CharField(required=False), "bio": serializers.CharField(required=False)}), responses={200: ProfileSerializer})
     def put(self, request):
         profile, _ = Profile.objects.get_or_create(user=request.user)
         profile.full_name = request.data.get("full_name", profile.full_name)
@@ -105,6 +112,7 @@ class ProfileUpdateView(APIView):
 
 class ProfileAvatarView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(responses={200: ProfileSerializer})
     def post(self, request):
         profile, _ = Profile.objects.get_or_create(user=request.user)
         avatar = request.FILES.get("avatar")
@@ -113,6 +121,7 @@ class ProfileAvatarView(APIView):
         profile.avatar = avatar
         profile.save()
         return Response(ProfileSerializer(profile, context={"request": request}).data)
+    @extend_schema(responses={200: inline_serializer("AvatarDeleteResponse", fields={"detail": serializers.CharField()})})
     def delete(self, request):
         profile, _ = Profile.objects.get_or_create(user=request.user)
         profile.avatar = None
@@ -121,16 +130,18 @@ class ProfileAvatarView(APIView):
 
 class SubscribeView(APIView):
     permission_classes = [IsAuthenticated]
+    @extend_schema(responses={200: SubscriptionSerializer})
     def get(self, request):
         sub, _ = Subscription.objects.get_or_create(user=request.user)
         return Response(SubscriptionSerializer(sub).data)
+    @extend_schema(responses={200: inline_serializer("SubscribeResponse", fields={"detail": serializers.CharField()})})
     def post(self, request):
-        from django.utils import timezone
         sub, _ = Subscription.objects.get_or_create(user=request.user)
         sub.is_premium = True
         sub.activated_at = timezone.now()
         sub.save()
         return Response({"detail": "Premium activated", "subscription": SubscriptionSerializer(sub).data})
+    @extend_schema(responses={200: inline_serializer("UnsubscribeResponse", fields={"detail": serializers.CharField()})})
     def delete(self, request):
         sub, _ = Subscription.objects.get_or_create(user=request.user)
         sub.is_premium = False

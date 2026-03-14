@@ -2,9 +2,10 @@ from django.db.models import Count, F, Q, Avg
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
 from catalog.models import Genre, Book
 from core.models import SiteLink
-from accounts.models import Subscription
 from api.serializers import GenreSerializer, BookSerializer, SiteLinkSerializer
 
 def _is_premium(user):
@@ -70,6 +71,7 @@ class BookNewView(generics.ListAPIView):
         ).order_by("-created_at")[:10]
 
 class BookRelatedView(APIView):
+    @extend_schema(responses={200: BookSerializer(many=True)})
     def get(self, request, id):
         book = Book.objects.filter(id=id).first()
         if not book:
@@ -81,6 +83,7 @@ class BookRelatedView(APIView):
         return Response(BookSerializer(related, many=True, context={"request": request}).data)
 
 class BookPdfView(APIView):
+    @extend_schema(responses={200: inline_serializer("BookPdfResponse", fields={"pdf_url": serializers.CharField()})})
     def get(self, request, id):
         book = Book.objects.filter(id=id).first()
         if not book:
@@ -92,6 +95,7 @@ class BookPdfView(APIView):
         return Response({"pdf_url": request.build_absolute_uri(book.pdf.url)})
 
 class BookAudioView(APIView):
+    @extend_schema(responses={200: inline_serializer("BookAudioResponse", fields={"audio_url": serializers.CharField()})})
     def get(self, request, id):
         book = Book.objects.filter(id=id).first()
         if not book:
@@ -103,5 +107,6 @@ class BookAudioView(APIView):
         return Response({"audio_url": request.build_absolute_uri(book.audio.url)})
 
 class SiteLinksView(APIView):
+    @extend_schema(responses={200: SiteLinkSerializer(many=True)})
     def get(self, request):
         return Response(SiteLinkSerializer(SiteLink.objects.all(), many=True).data)
