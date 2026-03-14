@@ -5,12 +5,15 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.openapi import AutoSchema
 from accounts.models import Subscription, Profile
 from api.serializers import ProfileSerializer, SubscriptionSerializer, RegisterSerializer, LoginSerializer
 
 User = get_user_model()
 
 class RegisterView(APIView):
+    @extend_schema(request=RegisterSerializer, responses={200: RegisterSerializer})
     def post(self, request):
         s = RegisterSerializer(data=request.data)
         if not s.is_valid():
@@ -20,6 +23,7 @@ class RegisterView(APIView):
         return Response({"token": token.key, "username": user.username, "is_premium": False})
 
 class LoginView(APIView):
+    @extend_schema(request=LoginSerializer, responses={200: LoginSerializer})
     def post(self, request):
         s = LoginSerializer(data=request.data)
         if not s.is_valid():
