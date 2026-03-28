@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { authJSON } from "./api.js";
+import { authJSON, getJSON } from "./api.js";
 import BookDetail from "./components/BookDetail.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -106,7 +106,6 @@ export default function App() {
                 genres={genres}
                 unreadCount={unreadCount}
             />
-
             <main>
                 {page === "home" && <Home go={handleGo} />}
                 {page === "books" && <Books go={handleGo} />}
@@ -119,7 +118,6 @@ export default function App() {
                 {page === "premium" && <Premium me={me} go={handleGo} />}
                 {page === "donate" && <Donate me={me} go={handleGo} refreshMe={refreshMe} />}
             </main>
-
             <Modal open={!!openBookId} onClose={() => { setOpenBookId(null); window.location.hash = "#home"; }}>
                 {openBookId && (
                     <BookDetail
@@ -133,7 +131,6 @@ export default function App() {
                     />
                 )}
             </Modal>
-
             <Footer />
         </div>
     );

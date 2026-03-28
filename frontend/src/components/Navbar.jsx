@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { setToken, authJSON } from "../api.js";
+import { useEffect, useState } from "react";
+import { authJSON, setToken } from "../api.js";
 
 function iconForGenre(name = "") {
   const n = name.toLowerCase();
-  if (n.includes("hikoya")) return "??";
-  if (n.includes("roman")) return "?";
-  if (n.includes("she")) return "??";
-  if (n.includes("qissa")) return "??";
-  if (n.includes("shaxsiy")) return "??";
-  if (n.includes("folklor")) return "??";
-  if (n.includes("bolalar")) return "??";
-  if (n.includes("ertak")) return "?";
-  if (n.includes("fantast")) return "??";
-  if (n.includes("ilmiy")) return "??";
-  if (n.includes("diniy")) return "??";
-  if (n.includes("psixolog")) return "??";
-  if (n.includes("tarix")) return "??";
-  if (n.includes("biznes")) return "??";
-  return "??";
+  if (n.includes("hikoya")) return "📄";
+  if (n.includes("roman")) return "⭐";
+  if (n.includes("she")) return "✏️";
+  if (n.includes("qissa")) return "💡";
+  if (n.includes("shaxsiy")) return "👤";
+  if (n.includes("folklor")) return "🪕";
+  if (n.includes("bolalar")) return "🙂";
+  if (n.includes("ertak")) return "⏳";
+  if (n.includes("fantast")) return "🚀";
+  if (n.includes("ilmiy")) return "⚛️";
+  if (n.includes("diniy")) return "🕌";
+  if (n.includes("psixolog")) return "🧠";
+  if (n.includes("tarix")) return "📜";
+  if (n.includes("biznes")) return "💼";
+  return "📚";
 }
 
 export default function Navbar({ page, go, me, genres, unreadCount }) {
@@ -33,7 +33,7 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
   }, []);
 
   async function logout() {
-    try { await authJSON("/api/auth/logout/", { method: "POST" }); } catch {}
+    try { await authJSON("/api/auth/logout/", { method: "POST" }); } catch { }
     setToken("");
     go("home");
     window.location.reload();
@@ -43,29 +43,31 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
     <header className="header">
       <div className="container nav">
         <a className="brand" href="#home" onClick={(e) => { e.preventDefault(); go("home"); }}>
-          <span className="logoBadge">M</span>
-          <span>Mutola</span>
+          <span className="logoBadge">R</span>
+          <span>Readuz</span>
         </a>
 
         <button className="burgerBtn" onClick={() => setMenuOpen(v => !v)}>
-          {menuOpen ? "?" : "?"}
+          {menuOpen ? "✕" : "☰"}
         </button>
 
         <nav className={`navlinks ${menuOpen ? "open" : ""}`}>
-          <a href="#home" className={page === "home" ? "active" : ""} onClick={(e) => { e.preventDefault(); go("home"); setMenuOpen(false); }}>
+          <a href="#home" className={page === "home" ? "active" : ""}
+            onClick={(e) => { e.preventDefault(); go("home"); setMenuOpen(false); }}>
             Bosh sahifa
           </a>
 
           <div className={"drop " + (openGenres ? "open" : "")}>
             <button className={`dropBtn ${page === "genres" ? "active" : ""}`}
               onClick={() => setOpenGenres(v => !v)}>
-              Janrlar <span className="chev">?</span>
+              Janrlar <span className="chev">▾</span>
             </button>
             <div className="dropMenu">
               <div className="dropTitle">Janrlar</div>
               <div className="dropScroll">
-                <a className="dropItem" href="#home" onClick={(e) => { e.preventDefault(); setOpenGenres(false); go("home"); setMenuOpen(false); }}>
-                  <span className="gIcon">??</span>
+                <a className="dropItem" href="#home"
+                  onClick={(e) => { e.preventDefault(); setOpenGenres(false); go("books"); setMenuOpen(false); }}>
+                  <span className="gIcon">📚</span>
                   <span className="gName">Hammasi</span>
                 </a>
                 {(genres || []).map((g) => (
@@ -86,21 +88,30 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
             </div>
           </div>
 
-          <a href="#premium" className={page === "premium" ? "active" : ""} onClick={(e) => { e.preventDefault(); go("premium"); setMenuOpen(false); }}>
+          <a href="#premium" className={page === "premium" ? "active" : ""}
+            onClick={(e) => { e.preventDefault(); go("premium"); setMenuOpen(false); }}>
             Premium
           </a>
 
-          <a href="#donate" className={page === "donate" ? "active" : ""} onClick={(e) => { e.preventDefault(); go("donate"); setMenuOpen(false); }}>
+          <a href="#donate" className={page === "donate" ? "active" : ""}
+            onClick={(e) => { e.preventDefault(); go("donate"); setMenuOpen(false); }}>
             Donat
+          </a>
+
+          <a href="https://t.me/lmutola_ibrary_bot" target="_blank" rel="noreferrer"
+            onClick={() => setMenuOpen(false)}>
+            Telegram
           </a>
 
           {me?.username && (
             <>
-              <a href="#bookmarks" className={page === "bookmarks" ? "active" : ""} onClick={(e) => { e.preventDefault(); go("bookmarks"); setMenuOpen(false); }}>
-                ?? Saqlangan
+              <a href="#bookmarks" className={page === "bookmarks" ? "active" : ""}
+                onClick={(e) => { e.preventDefault(); go("bookmarks"); setMenuOpen(false); }}>
+                🔖 Saqlangan
               </a>
-              <a href="#notifications" className={page === "notifications" ? "active" : ""} onClick={(e) => { e.preventDefault(); go("notifications"); setMenuOpen(false); }}>
-                ?? {unreadCount > 0 ? <span className="badge">{unreadCount}</span> : "Bildirishnomalar"}
+              <a href="#notifications" className={page === "notifications" ? "active" : ""}
+                onClick={(e) => { e.preventDefault(); go("notifications"); setMenuOpen(false); }}>
+                🔔 {unreadCount > 0 ? <span className="badge">{unreadCount}</span> : "Bildirishnomalar"}
               </a>
             </>
           )}
@@ -119,7 +130,8 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
               <button className="logoutBtn" onClick={logout}>Chiqish</button>
             </div>
           ) : (
-            <a className="btn smallBtn" href="#login" onClick={(e) => { e.preventDefault(); go("login"); }}>
+            <a className="btn smallBtn" href="#login"
+              onClick={(e) => { e.preventDefault(); go("login"); }}>
               Kirish
             </a>
           )}
