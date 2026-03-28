@@ -43,23 +43,26 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
     <header className="header">
       <div className="container nav">
         <a className="brand" href="#home" onClick={(e) => { e.preventDefault(); go("home"); }}>
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Kitob sahifalari - chap */}
-    <path d="M24 38 C24 38 8 30 8 16 L8 14 C8 14 16 18 24 22 Z" fill="#c0392b"/>
-    <path d="M24 38 C24 38 8 30 8 16 L8 14 C8 14 16 18 24 22 Z" fill="#e74c3c" opacity="0.7"/>
-    {/* Kitob sahifalari - o'ng */}
-    <path d="M24 38 C24 38 40 30 40 16 L40 14 C40 14 32 18 24 22 Z" fill="#c0392b"/>
-    <path d="M24 38 C24 38 40 30 40 16 L40 14 C40 14 32 18 24 22 Z" fill="#e74c3c" opacity="0.7"/>
-    {/* Quyosh / yorug'lik */}
-    <circle cx="24" cy="12" r="4" fill="#f39c12"/>
-    <path d="M24 6 L24 4" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M24 20 L24 22" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M18 8 L16.5 6.5" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M30 8 L31.5 6.5" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M16 12 L14 12" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M32 12 L34 12" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
-    {/* Readuz text */}
-    <text x="24" y="46" textAnchor="middle" fontSize="7" fontWeight="900" fill="#c0392b" fontFamily="Inter,sans-serif">READUZ</text>
+  <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Kitob - chap qanot */}
+    <path d="M50 65 C50 65 15 55 12 30 L12 28 C12 28 30 38 50 45 Z" fill="#e8442a"/>
+    {/* Kitob - o'ng qanot */}
+    <path d="M50 65 C50 65 85 55 88 30 L88 28 C88 28 70 38 50 45 Z" fill="#e8442a"/>
+    {/* Kitob markaziy chiziq */}
+    <path d="M50 45 L50 65" stroke="#c0392b" strokeWidth="2"/>
+    {/* Quyosh doirasi */}
+    <circle cx="50" cy="22" r="10" fill="#f5a623"/>
+    {/* Quyosh nurlari */}
+    <line x1="50" y1="6" x2="50" y2="2" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="50" y1="38" x2="50" y2="34" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="34" y1="22" x2="30" y2="22" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="70" y1="22" x2="66" y2="22" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="39" y1="11" x2="36" y2="8" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="64" y1="11" x2="67" y2="8" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="39" y1="33" x2="36" y2="36" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="64" y1="33" x2="67" y2="36" stroke="#f5a623" strokeWidth="3" strokeLinecap="round"/>
+    {/* READUZ text */}
+    <text x="50" y="82" textAnchor="middle" fontSize="14" fontWeight="900" fill="#e8442a" fontFamily="Inter,sans-serif" letterSpacing="2">READUZ</text>
   </svg>
 </a>
 
