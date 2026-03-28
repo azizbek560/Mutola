@@ -43,9 +43,25 @@ export default function Navbar({ page, go, me, genres, unreadCount }) {
     <header className="header">
       <div className="container nav">
         <a className="brand" href="#home" onClick={(e) => { e.preventDefault(); go("home"); }}>
-          <span className="logoBadge">R</span>
-          <span>Readuz</span>
-        </a>
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Kitob sahifalari - chap */}
+    <path d="M24 38 C24 38 8 30 8 16 L8 14 C8 14 16 18 24 22 Z" fill="#c0392b"/>
+    <path d="M24 38 C24 38 8 30 8 16 L8 14 C8 14 16 18 24 22 Z" fill="#e74c3c" opacity="0.7"/>
+    {/* Kitob sahifalari - o'ng */}
+    <path d="M24 38 C24 38 40 30 40 16 L40 14 C40 14 32 18 24 22 Z" fill="#c0392b"/>
+    <path d="M24 38 C24 38 40 30 40 16 L40 14 C40 14 32 18 24 22 Z" fill="#e74c3c" opacity="0.7"/>
+    {/* Quyosh / yorug'lik */}
+    <circle cx="24" cy="12" r="4" fill="#f39c12"/>
+    <path d="M24 6 L24 4" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M24 20 L24 22" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M18 8 L16.5 6.5" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M30 8 L31.5 6.5" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M16 12 L14 12" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M32 12 L34 12" stroke="#f39c12" strokeWidth="2" strokeLinecap="round"/>
+    {/* Readuz text */}
+    <text x="24" y="46" textAnchor="middle" fontSize="7" fontWeight="900" fill="#c0392b" fontFamily="Inter,sans-serif">READUZ</text>
+  </svg>
+</a>
 
         <button className="burgerBtn" onClick={() => setMenuOpen(v => !v)}>
           {menuOpen ? "✕" : "☰"}
